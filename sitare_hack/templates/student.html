@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Attendance System</title>
+        <style>
+            h1 {
+                text-align: center;
+                text-decoration: double;
+                text-decoration-color: antiquewhite;
+            }
+            body {
+                background-image: url('/static/pexels-pavel-danilyuk-8423018.jpg');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                color: #333;
+            }
+            h1 {
+                text-align: center;
+                margin-top: 50px;
+            }
+            #idForm {
+                margin: 20px auto;
+                width: 300px;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            
+            input[type="text"], select {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+            
+            input[type="submit"] {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                color: #fff;
+                background-color: #007BFF;
+            }
+            
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+            
+            #video, #canvas {
+                display: block;
+                margin: 20px auto;
+                border: 1px solid #ddd;
+            }
+            
+            #snap {
+                display: block;
+                margin: 20px auto;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                color: #fff;
+                background-color: #28a745;
+            }
+            
+            #snap:hover {
+                background-color: #1e7e34;
+            }
+        </style>
+    </head>
+<body>
+    <h1>Mark Your Attendance</h1>
+    <form id="idForm">
+        <label for="id">Student ID:</label><br>
+        <input type="text" id="id" name="id"><br>
+        <input type="submit" value="Submit"><br>
+        <label for="subject">Subject:</label><br>
+        <select id="subject" name="subject">
+            <option value="maths">Maths</option>
+            <option value="ai/ml">AI/ML</option>
+            <option value="english">English</option>
+            <option value="dsa">DSA</option>
+            <option value="java">Java</option>
+            <option value="dbms">DBMS</option>
+        </select>
+    </form>
+    
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    
+</body>   
+
+
+
+
+
+<script>
+
+// Get access to the camera!
+function getCameraAccess() {
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            //video.src = window.URL.createObjectURL(stream);
+            video.srcObject = stream;
+            video.play();
+        });
+    }
+}
+
+// Elements for taking the snapshot
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var video = document.getElementById('video');
+
+// Trigger photo take
+// Trigger photo take
+document.getElementById("snap").addEventListener("click", function() {
+    context.drawImage(video, 0, 0, 640, 480);
+    var dataURL = canvas.toDataURL();
+    // Send dataURL to the server
+    var formData = new FormData();
+    formData.append('id', document.getElementById("id").value);
+    formData.append('image', dataURL);
+    formData.append('subject', document.getElementById("subject").value);  // Add this line
+    fetch('/process_image', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data);
+        window.location.href = '/';
+    });
+});
+
+
+// Get student ID before opening camera
+document.getElementById("idForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    var id = document.getElementById("id").value;
+    var formData = new FormData();
+    formData.append('id', id);
+    fetch('/student', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.text())
+    .then(data => {
+    if (data === 'Student exists') {
+        console.log("Opening webcam...");
+        getCameraAccess();
+    } else {
+        alert('No student found');
+    }
+});
+
+});
+
+</script>
+
+</body>
+</html>

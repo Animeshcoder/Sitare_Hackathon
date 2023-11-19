@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle, rgb(227, 123, 123), rgb(232, 232, 144), rgb(133, 220, 133), rgb(131, 131, 238));
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        form {
+            width: 300px;
+            margin: 0 auto;
+            padding: 70px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 5px;
+        }
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            color: #fff;
+            background-color: #007BFF;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Check Attendance</h2>
+<form action="/admin" method="post">
+  <input type="hidden" name="action" value="check_attendance">
+  <label for="id">Student ID:</label><br>
+  <input type="text" id="id" name="id"><br>
+  <input type="submit" value="Check Attendance">
+</form>
+
+<h2>Add Student</h2>
+<form action="/admin" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="action" value="add_student">
+  <label for="id">Student ID:</label><br>
+  <input type="text" id="id" name="id"><br>
+  <label for="photo">Student Photo:</label><br>
+  <input type="file" id="photo" name="photo"><br>
+  <input type="submit" value="Add Student">
+</form>
+
+</body>
+</html>

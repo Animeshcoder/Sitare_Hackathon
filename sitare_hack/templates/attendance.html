@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance of this month</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('/static/pexels-pixabay-159711.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            
+        }
+
+        table {
+            margin: 0 auto;
+            width: 50%;
+            border-collapse: collapse;
+            background: radial-gradient(circle, rgb(234, 188, 125), rgb(184, 216, 109));
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Attendance of this month</h1>
+
+<table>
+    <tr>
+        <th>Subject</th>
+        <th>Days of Attendance</th>
+    </tr>
+    {% for subject, days in attendance_table.items() %}
+    <tr>
+        <td>{{ subject }}</td>
+        <td>{{ days }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
