@@ -62,7 +62,7 @@ def face_comparison(image1, image2):
     image2_embedding = face_recognition_model.compute_face_descriptor(image2)
     dist = np.linalg.norm(np.array(image1_embedding) - np.array(image2_embedding))
     
-    return dist < 0.8
+    return dist < 0.4
 
 @app.route('/')
 def index():
